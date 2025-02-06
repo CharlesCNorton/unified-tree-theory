@@ -13,7 +13,7 @@ We develop a comprehensive generating function framework that simultaneously enc
 
 ## 1. Introduction
 
-Tree invariants have played a central role in the combinatorial analysis of tree shapes, with applications in phylogenetics, computer science, and applied probability. Although classical results such as the Catalan numbers provide the enumerative backbone of full binary trees, several functionals that measure tree balance—such as the Sackin index, Colless index, total cophenetic index, and cherry count—have typically been studied via separate recurrences or asymptotic approximations. In this paper, we introduce a unified generating function framework that simultaneously encodes these invariants in a multivariate generating function. Our derivations are fully rigorous; we provide complete proofs for all generating function equations and conduct a detailed asymptotic analysis using singularity methods. Our results are validated by extensive computational experiments (with data for \( n \) up to 100) and are accompanied by an analysis of the computational complexity of the recurrences. Although the tree height is an important invariant, its non-additive nature (being defined by a maximum rather than a sum) makes it analytically incompatible with our generating function techniques; we discuss this issue and explain its exclusion. The unified framework we develop not only consolidates previous isolated results but also provides novel insights into the joint distribution of tree invariants.
+Tree invariants have played a central role in the combinatorial analysis of tree shapes, with applications in phylogenetics, computer science, and applied probability. Although classical results such as the Catalan numbers provide the enumerative backbone of full binary trees, several functionals that measure tree balance—such as the Sackin index, Colless index, total cophenetic index, and cherry count—have typically been studied via separate recurrences or asymptotic approximations. In this paper, we introduce a unified generating function framework that simultaneously encodes these invariants in a multivariate generating function. Our derivations are fully rigorous; we provide complete proofs for all generating function equations and conduct a detailed asymptotic analysis using singularity methods. Our results are validated by extensive computational experiments (with data for _n_ up to 100) and are accompanied by an analysis of the computational complexity of the recurrences. Although the tree height is an important invariant, its non-additive nature (being defined by a maximum rather than a sum) makes it analytically incompatible with our generating function techniques; we discuss this issue and explain its exclusion. The unified framework we develop not only consolidates previous isolated results but also provides novel insights into the joint distribution of tree invariants.
 
 ---
 
@@ -23,72 +23,55 @@ Tree invariants have played a central role in the combinatorial analysis of tree
 
 A **full binary tree** is defined recursively:
 - **Base Case:** A single leaf (denoted by “L”) is a full binary tree.
-- **Recursive Case:** If \( T_L \) and \( T_R \) are full binary trees, then the ordered pair
-  \[
-  T = (T_L, T_R)
-  \]
+- **Recursive Case:** If _Tₗ_ and _Tᵣ_ are full binary trees, then the ordered pair  
+  _T = (Tₗ, Tᵣ)_  
   is a full binary tree.
 
-It is well known that the number of full binary trees with \( n \) leaves is given by the \((n-1)\)th Catalan number,
-\[
-C_{n-1} = \frac{1}{n}\binom{2n-2}{n-1},
-\]
-with generating function
-\[
-T(x)=\frac{1-\sqrt{1-4x}}{2} = \sum_{n\ge1} C_{n-1}\, x^n.
-\]
+It is well known that the number of full binary trees with _n_ leaves is given by the (_n−1_)th Catalan number,
+
+Cₙ₋₁ = (1/n) ⸨(2n−2)⸩  
+with generating function  
+
+T(x) = (1 − √(1 − 4x)) / 2 = ∑ₙ≥1 Cₙ₋₁ xⁿ.
 
 ### 2.2 Invariants
 
-For a full binary tree \( T \), we consider the following invariants:
+For a full binary tree _T_, we consider the following invariants:
 
-1. **Sackin Index (\( S(T) \))**  
+1. **Sackin Index (S(T))**  
    The Sackin index is defined as the sum of the depths of all leaves (with the root at depth 0).  
-   - **Leaf:** \( S(T)=0 \).  
-   - **Internal Node:** If \( T = (T_L, T_R) \) has \( L(T_L)=i \) and \( L(T_R)=j \) leaves, then
-     \[
-     S(T)= S(T_L) + S(T_R) + (i+j).
-     \]
+   - **Leaf:** _S(T) = 0_.  
+   - **Internal Node:** If _T = (Tₗ, Tᵣ)_ has _L(Tₗ) = i_ and _L(Tᵣ) = j_ leaves, then  
+     _S(T) = S(Tₗ) + S(Tᵣ) + (i + j)_.
 
-2. **Colless Index (\( C(T) \))**  
+2. **Colless Index (C(T))**  
    The Colless index is the sum over all internal nodes of the absolute difference between the number of leaves in the left and right subtrees.
-   - **Leaf:** \( C(T)=0 \).  
-   - **Internal Node:** For \( T = (T_L, T_R) \),
-     \[
-     C(T)= C(T_L) + C(T_R) + |\,L(T_L)-L(T_R)\,|.
-     \]
+   - **Leaf:** _C(T) = 0_.  
+   - **Internal Node:** For _T = (Tₗ, Tᵣ)_,  
+     _C(T) = C(Tₗ) + C(Tᵣ) + | L(Tₗ) − L(Tᵣ) |_.
 
-3. **Total Cophenetic Index (\( \Phi(T) \))**  
-   Label the leaves uniquely. For any unordered pair \( \{i,j\} \) of leaves, let \( d_T(i,j) \) denote the depth of their lowest common ancestor (LCA). Then
-   \[
-   \Phi(T)= \sum_{\{i,j\}\subseteq \operatorname{Leaves}(T)} d_T(i,j).
-   \]
-   Equivalently, if an internal node \( v \) (at depth \( d \)) has \( \ell(v) \) descendant leaves, its contribution is
-   \[
-   \binom{\ell(v)}{2}\, d.
-   \]
+3. **Total Cophenetic Index (Φ(T))**  
+   Label the leaves uniquely. For any unordered pair _{i, j}_ of leaves, let _d_T(i, j)_ denote the depth of their lowest common ancestor (LCA). Then  
+   _Φ(T) = ∑_{i,j} d_T(i, j)_  
+   Equivalently, if an internal node _v_ (at depth _d_) has _ℓ(v)_ descendant leaves, its contribution is  
+   _⸨ℓ(v)⸩₂ d_.
 
-4. **Cherry Count (\( X(T) \))**  
+4. **Cherry Count (X(T))**  
    A cherry is defined as an internal node whose two children are leaves.
-   - **Leaf:** \( X(T)=0 \).  
-   - **Internal Node:** If \( T=(T_L,T_R) \), then
-     \[
-     X(T)= X(T_L)+ X(T_R) + \delta,
-     \]
-     where \( \delta = 1 \) if \( L(T_L)=L(T_R)=1 \) and \( \delta=0 \) otherwise.
+   - **Leaf:** _X(T) = 0_.  
+   - **Internal Node:** If _T = (Tₗ, Tᵣ)_, then  
+     _X(T) = X(Tₗ) + X(Tᵣ) + δ_,  
+     where _δ = 1_ if _L(Tₗ) = L(Tᵣ) = 1_ and _δ = 0_ otherwise.
 
-5. **Sackin2 Index (\( S2(T) \))**  
+5. **Sackin2 Index (S2(T))**  
    The Sackin2 index is the sum of the squares of the depths of all leaves.
-   - **Leaf:** \( S2(T)=0 \).  
-   - **Internal Node:** For \( T=(T_L,T_R) \),
-     \[
-     S2(T)= S2(T_L)+ S2(T_R)+2\bigl(S(T_L)+S(T_R)\bigr)+\bigl(L(T_L)+L(T_R)\bigr).
-     \]
+   - **Leaf:** _S2(T) = 0_.  
+   - **Internal Node:** For _T = (Tₗ, Tᵣ)_,  
+     _S2(T) = S2(Tₗ) + S2(Tᵣ) + 2(S(Tₗ) + S(Tᵣ)) + (L(Tₗ) + L(Tᵣ))_.
 
-Thus, each full binary tree \( T \) is associated with the 6-tuple:
-\[
-\Bigl(L(T),\, X(T),\, C(T),\, S(T),\, \Phi(T),\, S2(T)\Bigr).
-\]
+Thus, each full binary tree _T_ is associated with the 6-tuple:
+
+_(L(T), X(T), C(T), S(T), Φ(T), S2(T))_.
 
 ---
 
