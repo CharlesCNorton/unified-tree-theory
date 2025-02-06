@@ -884,3 +884,131 @@ The code provided here serves as a robust tool for verifying the correctness of 
 - Investigating alternative methods to address non-additive invariants such as height.
 
 The code is written with extensive inline comments to aid reproducibility. All raw outputs (including those for \( n=1 \) to \( n=100 \)) have been confirmed to match the theoretical predictions, ensuring that our framework is both exact and computationally efficient.
+
+**Erratum: Correction and Detailed Technical Analysis of the Sackin2 Invariant in the Unified Generating Function Framework**  
+*Date: February 6, 2025*
+
+---
+
+**1. Introduction**
+
+In the original paper we introduced a unified generating function framework for full binary trees and several invariants (Sackin, Colless, cophenetic, cherry count, etc.). In that treatment, we defined the Sackin index by
+\[
+S(T)= \sum_{\ell\in \operatorname{Leaves}(T)} d(\ell),
+\]
+and the Sackin2 index by
+\[
+S2(T)= \sum_{\ell\in \operatorname{Leaves}(T)} d(\ell)^2.
+\]
+For a single leaf (at depth 0) we set
+\[
+S(\text{leaf})=0,\quad S2(\text{leaf})=0.
+\]
+For a full binary tree \(T=(T_L,T_R)\) with \(L(T)=L(T_L)+L(T_R)\) leaves, the recurrences were given as
+\[
+\begin{aligned}
+S(T)&= S(T_L) + S(T_R) + L(T),\\[1mm]
+S2(T)&= S2(T_L) + S2(T_R) + 2\Bigl(S(T_L) + S(T_R)\Bigr) + L(T).
+\end{aligned}
+\]
+It was originally claimed that the generating function for \(S2(T)\) is identical to that for \(S(T)\). However, subsequent rigorous computational testing using a Python unit test suite (with symbolic verification via Sympy) revealed that the numerical sequence for \(S2(T)\) is distinct. For instance, our recurrence computations yield:
+\[
+\begin{aligned}
+S(3)&= 10,\quad S2(3)= 18,\\[1mm]
+S(4)&= 44,\quad S2(4)= 108,\\[1mm]
+S(5)&= 186,\quad S2(5)= 562,\quad \ldots
+\end{aligned}
+\]
+This discrepancy indicates that the original claim must be revised.
+
+---
+
+**2. Re-Derivation of the Generating Function for \(S2(T)\)**
+
+Let
+\[
+T(x)=\frac{1-\sqrt{1-4x}}{2}
+\]
+denote the generating function for full binary trees (i.e. the Catalan generating function), and let
+\[
+Q(x)= \frac{x\,(1-\sqrt{1-4x})}{1-4x}
+\]
+be the generating function for the Sackin index \(S(T)\).
+
+When an internal node is attached to a tree, every leaf’s depth increases by 1. In particular, for a leaf of depth \(d\) the new contribution becomes
+\[
+(d+1)^2 = d^2 + 2d + 1.
+\]
+Thus, when a tree \(T\) is formed by joining two subtrees \(T_L\) and \(T_R\), we have
+\[
+\begin{aligned}
+S(T) &= S(T_L) + S(T_R) + L(T),\\[1mm]
+S2(T)&= S2(T_L) + S2(T_R) + 2\Bigl(S(T_L) + S(T_R)\Bigr) + L(T).
+\end{aligned}
+\]
+Translating this recurrence into generating function language (via convolution and the symbolic method), one obtains a functional equation for
+\[
+U(x)=\sum_{n\ge 1} S2(n)x^n.
+\]
+Specifically, the convolution yields an equation of the form
+\[
+U(x)= 2\,T(x)\,U(x) \;+\; 4\,T(x)\,Q(x) \;+\; x\frac{d}{dx}\Bigl[T(x)^2\Bigr].
+\]
+Here, the three terms account respectively for:
+- The contributions from \(S2(T_L)\) and \(S2(T_R)\), with a depth shift incorporated via multiplication by \(T(x)\),
+- The extra contributions from the \(2\bigl(S(T_L)+S(T_R)\bigr)\) term (using \(Q(x)\) for the Sackin index), and
+- The contribution from \(L(T)\), where \(T(x)^2\) represents the combinatorial structure of splitting into two subtrees (and the derivative encodes the increase in depth).
+
+Recall that
+\[
+1-2T(x)= \sqrt{1-4x},
+\]
+and that
+\[
+T(x)^2 = \frac{(1-\sqrt{1-4x})^2}{4} = \frac{1-\sqrt{1-4x}-2x}{2}.
+\]
+Differentiating with respect to \(x\) gives:
+\[
+\frac{d}{dx}\Bigl[T(x)^2\Bigr] = \frac{d}{dx}\left(\frac{1-\sqrt{1-4x}-2x}{2}\right)
+= \frac{1}{\sqrt{1-4x}} - 1.
+\]
+After algebraic rearrangement and solving for \(U(x)\), we obtain the closed-form generating function for the Sackin2 index:
+\[
+\boxed{U(x)= \frac{4x\Bigl(1-\sqrt{1-4x}-2x\Bigr)}{(1-4x)^{3/2}} + \frac{x\Bigl(1-\sqrt{1-4x}\Bigr)}{1-4x}\,.}
+\]
+
+---
+
+**3. Computational Verification**
+
+We verified the corrected generating function \(U(x)\) using Python and Sympy. The series expansion of \(U(x)\) was computed to be:
+\[
+U(x)= 2x^2 + 18x^3 + 108x^4 + 562x^5 + 2724x^6 + 12660x^7 + \cdots,
+\]
+which precisely yields:
+\[
+S2(2)=2,\quad S2(3)=18,\quad S2(4)=108,\quad S2(5)=562,\quad S2(6)=2724,\quad S2(7)=12660,\quad \ldots
+\]
+These coefficients match the numerical sequence obtained from the recurrence for \(S2(T)\). (For full details, see the Python test script in Appendix D of the supplementary materials.)
+
+---
+
+**4. Asymptotic Analysis**
+
+The dominant singularity of \(T(x)\) is at \(x=\tfrac{1}{4}\), and classical singularity analysis (see Flajolet and Sedgewick [1]) applies. Although the asymptotic behavior of the Sackin2 index is not identical to that of the Sackin index—owing to the extra \(2d\) term in \((d+1)^2\)—the generating function \(U(x)\) accurately reproduces the combinatorial structure of full binary trees with squared depth contributions. Detailed analysis shows that the asymptotic estimates for \(S2(n)\) differ by explicit polynomial factors from those for \(S(n)\), confirming that the two invariants are indeed distinct.
+
+---
+
+**5. Conclusion**
+
+In light of the above re-derivation and verification, we must correct the original claim regarding the Sackin2 invariant. The corrected generating function for the Sackin2 index is:
+\[
+\boxed{U(x)= \frac{4x\Bigl(1-\sqrt{1-4x}-2x\Bigr)}{(1-4x)^{3/2}} + \frac{x\Bigl(1-\sqrt{1-4x}\Bigr)}{1-4x}\,.}
+\]
+This erratum clarifies that the Sackin2 invariant has a distinct generating function and numerical sequence from the Sackin index. The overall unified framework remains robust; only the treatment of the Sackin2 invariant requires revision. We recommend that future versions of this work integrate the corrected generating function \(U(x)\) as provided above.
+
+---
+
+*Reference:*
+
+1. Flajolet, P. & Sedgewick, R. (2009). *Analytic Combinatorics*. Cambridge University Press.
