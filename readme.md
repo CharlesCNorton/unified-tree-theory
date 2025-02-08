@@ -1,6 +1,5 @@
 ────────────────────────────────────────────────────────────
-# A Unified Generating Function Framework for Tree Invariants:  
-Exact Proofs, Asymptotic Analysis, and Computational Validation
+# A Unified Generating Function Framework for Tree Invariants: Exact Proofs, Asymptotic Analysis, and Computational Validation
 
 **Authors:** Charles C. Norton & OpenAI’s o3‑mini‑high  
 **Date:** February 8, 2025
