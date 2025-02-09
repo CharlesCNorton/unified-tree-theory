@@ -170,49 +170,6 @@ The generating function obtained after combining with the convolution recurrence
 
 This closed form has been verified by both dynamic programming and symbolic manipulation.
 
-### 4.4 Total Cophenetic Index (TCI)
-
-Recall that for a tree *T = (Tₗ, Tᵣ)* with left and right sizes *i* and *n − i*, the root contributes  
-*ΔΦ = (iC₂) + ((n − i)C₂)*.
-
-After translating the convolution recurrence into the generating function setting and performing the necessary algebraic manipulations, we obtain:  
-*F(x, u) = x + [u / (4(1 − u))] · (√(1 − 4x + 4xu) − √(1 − 4x)).*
-
-This expression satisfies the following important properties:
-
-- **Boundary Accuracy:** When *u = 0*, we have *F(x, 0) = x*, which correctly reflects that the only tree with total cophenetic index 0 is the single-leaf tree.
-- **Formal Power Series Validity:** Although direct evaluation at *u = 1* may introduce square-root branch issues, interpreted as a formal power series in *x* and *u* the expansion recovers the correct coefficients. In particular, letting *u → 1* recovers the classical Catalan generating function,  
-  *F(x, 1) = (1 − √(1 − 4x)) / 2*,  
-  ensuring consistency with the univariate count.
-- **Enhanced Analytical Capability:** With this closed form in hand, singularity analysis can be applied directly to derive moments, extract asymptotics, and study joint distributions with other invariants.
-
-### 4.5 Cherry Count
-
-For the cherry count, let  
-*G₍cherry₎(x, y) = ∑ₙ≥₁ ∑₍c≥0₎ a(n, c) · xⁿ yᶜ*,  
-where *a(n, c)* counts the number of trees with *n* leaves and *c* cherries. A careful derivation (which accounts for the special case when both subtrees are leaves, thereby creating a cherry at the root) yields the closed-form solution:  
-*G₍cherry₎(x, y) = (1 − √((1 − 2x)² + 4x²(y − 1))) / (2x).*
-
-This generating function satisfies:
-
-- **Boundary & Convolution Accuracy:** Setting *y = 1* recovers the standard Catalan generating function *T(x) = (1 − √(1 − 4x)) / 2*, since it sums over all trees regardless of the number of cherries. Moreover, the structure of the square-root ensures that the convolution inherent in the tree recurrences is faithfully encoded.
-- **Handling of Symbolic Artifacts:** As with the TCI generating function, while direct numerical evaluation near *y = 1* requires care (due to the square-root branch cuts), the formal power series expansion yields the exact coefficients for each *(n, c)*.
-- **Analytical Strength:** This closed form allows immediate derivation of the average number of cherries, variance, and even higher moments. Moreover, it facilitates a unified analysis alongside the other invariants.
-
-### 4.6 Sackin₂ Index
-
-Define  
-*U(x) = ∑ₙ≥₁ S₂(n) · xⁿ*,  
-where *S₂(n)* is the sum of the squares of leaf depths over all trees of size *n*. Because each leaf’s squared depth increases according to  
-*(d + 1)² = d² + 2d + 1*,  
-the recurrence for *S₂(T)* becomes  
-*S₂(T) = S₂(Tₗ) + S₂(Tᵣ) + 2(S(Tₗ) + S(Tᵣ)) + L(T).*  
-
-The generating function obtained after combining with the convolution recurrence is  
-*U(x) = [4x(1 − √(1 − 4x) − 2x)] / (1 − 4x)³/² + [x(1 − √(1 − 4x))] / (1 − 4x).*  
-
-This closed form has been verified by both dynamic programming and symbolic manipulation.
-
 ### 6.3 Table of Results
 
 A representative table (for selected *n*) is as follows:
