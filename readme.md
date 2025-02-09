@@ -46,18 +46,13 @@ Extensive technical derivations and Python code for verification are provided in
 
 ## 2. Preliminaries and Definitions
 
-
-
 ### 2.1 Full Binary Trees
-
-
 
 A **full binary tree** is defined recursively:
 
 - **Base Case:** A single leaf is a full binary tree of size *n = 1*.
 
 - **Recursive Case:** If *Tₗ* and *Tᵣ* are full binary trees, then the ordered pair (*Tₗ, Tᵣ*) forms a full binary tree.
-
 
 Let *L(T)* denote the number of leaves in *T*. The number of full binary trees with *n* leaves is given by the (*n − 1*)th Catalan number:
 
@@ -92,8 +87,6 @@ Thus, every full binary tree *T* of size *n* is associated with the 6-tuple
 *(L(T), X(T), C(T), S(T), Φ(T), S₂(T)).*
 
 ---
-
-
 
 ## 3. Multivariate Generating Function Framework
 
@@ -243,13 +236,6 @@ A representative table (for selected *n*) is as follows:
 100   ≈2.28e+56   ≈3.79e+59   ≈2.91e+59   ≈8.82e+60   ≈5.72e+60   ...
 
 ```
-
-
-
----
-
-
-
 ## 7. Discussion: Why Height Is Excluded
 
 The height of a full binary tree is defined as the maximum leaf depth:  
@@ -700,5 +686,3 @@ We reiterate that:
 3. No fundamental mistake invalidates the unification or the formal derivations. Instead, both the paper and user code must clarify these interpretive details.
 
 With these clarifications, one can replicate all expansions exactly and match dynamic-programming enumerations for n up to 100 leaves. We hope this erratum fully resolves any confusion and ensures future researchers can adopt our framework smoothly, deriving consistent expansions for all six tree invariants without branch‐cut or counting‐convention pitfalls.
-
-*End of Erratum*
